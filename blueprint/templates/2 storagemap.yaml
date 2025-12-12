@@ -1,0 +1,29 @@
+{{- $providerSource := (lookup "forklift.konveyor.io/v1beta1" "Provider" .Release.Namespace .Release.Name ) }}
+{{- $providerDestination := (lookup "forklift.konveyor.io/v1beta1" "Provider" .Release.Namespace "host" )  }}
+{{- if and $providerSource $providerDestination }}
+apiVersion: forklift.konveyor.io/v1beta1
+kind: StorageMap
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  map:
+    - destination:
+        storageClass: gp3-csi
+      source:
+        id: 693ae9d4-571997ac-8043-d05099dadcab
+        name: datastore_sata
+  provider:
+    destination:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: Provider
+      name: host
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $providerDestination.metadata.uid }}
+    source:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: Provider
+      name: {{ .Release.Name }}
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $providerSource.metadata.uid }}
+{{- end -}}

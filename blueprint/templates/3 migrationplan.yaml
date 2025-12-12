@@ -1,0 +1,53 @@
+{{- $providerSource := (lookup "forklift.konveyor.io/v1beta1" "Provider" .Release.Namespace .Release.Name ) }}
+{{- $providerDestination := (lookup "forklift.konveyor.io/v1beta1" "Provider" .Release.Namespace "host" ) }}
+{{- $NetworkMap := (lookup "forklift.konveyor.io/v1beta1" "NetworkMap" .Release.Namespace .Release.Name ) }}
+{{- $StorageMap := (lookup "forklift.konveyor.io/v1beta1" "StorageMap" .Release.Namespace .Release.Name ) }}
+{{- if and $providerSource $providerDestination $NetworkMap $StorageMap }}
+apiVersion: forklift.konveyor.io/v1beta1
+kind: Plan
+metadata:
+  annotations:
+    populatorLabels: 'True'
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  pvcNameTemplateUseGenerateName: true
+  warm: false
+  migrateSharedDisks: true
+  targetNamespace: {{ .Release.Namespace }}
+  useCompatibilityMode: true
+  skipGuestConversion: false
+  provider:
+    destination:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: Provider
+      name: host
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $providerDestination.metadata.uid }}
+    source:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: Provider
+      name: {{ .Release.Name }}
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $providerSource.metadata.uid }}
+  preserveStaticIPs: false
+  type: cold
+  vms:
+    - id: '1'
+      name: test-migration-1
+  map:
+    network:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: NetworkMap
+      name: {{ .Release.Name }}
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $NetworkMap.metadata.uid }}
+    storage:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: StorageMap
+      name: {{ .Release.Name }}
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $StorageMap.metadata.uid }}
+  runPreflightInspection: true
+  targetPowerState: auto
+{{- end -}}

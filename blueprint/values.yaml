@@ -1,0 +1,18 @@
+# @schema
+# type: object
+# required: true
+# description: ESXi credentials
+# @schema
+esxi:
+  # @schema
+  # type: string
+  # required: true
+  # description: ESXi username
+  # @schema
+  user: ""
+  # @schema
+  # type: string
+  # required: true
+  # description: ESXi password
+  # @schema
+  password: ""

@@ -1,0 +1,31 @@
+# Source provider
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace .Release.Name ) }}
+{{- if $secret }}
+apiVersion: forklift.konveyor.io/v1beta1
+kind: Provider
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  secret:
+    name: {{ .Release.Name }}
+    namespace: {{ .Release.Namespace }}
+  settings:
+    sdkEndpoint: esxi
+    vddkInitImage: 'ghcr.io/krateoplatformops/migration:1.0.0'
+  type: vsphere
+  url: 'https://ns3181354.ip-51-210-221.eu/sdk'
+{{- end -}}
+
+
+# Destination provider -> created by forklift on openshift, vanilla unknown
+# apiVersion: forklift.konveyor.io/v1beta1
+# kind: Provider
+# metadata:
+#   generation: 1
+#   name: host
+#   namespace: {{ .Release.Namespace }}
+# spec:
+#   secret: {}
+#   type: openshift
+#   url: ""

@@ -1,0 +1,13 @@
+{{- $PlanUid := ( lookup "forklift.konveyor.io/v1beta1" "Plan" .Release.Namespace .Release.Name ) }}
+{{- if $PlanUid }}
+apiVersion: forklift.konveyor.io/v1beta1
+kind: Migration
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  plan:
+    name: {{ .Release.Name }}
+    namespace: {{ .Release.Namespace }}
+    uid: {{ $PlanUid.metadata.uid }}
+{{- end -}}

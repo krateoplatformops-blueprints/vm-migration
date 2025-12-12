@@ -1,0 +1,28 @@
+{{- $providerSource := (lookup "forklift.konveyor.io/v1beta1" "Provider" .Release.Namespace .Release.Name ) }}
+{{- $providerDestination := (lookup "forklift.konveyor.io/v1beta1" "Provider" .Release.Namespace "host" )  }}
+{{- if and $providerSource $providerDestination }}
+apiVersion: forklift.konveyor.io/v1beta1
+kind: NetworkMap
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  map:
+    - destination:
+        type: pod
+      source:
+        id: HaNetwork-VM Network
+  provider:
+    destination:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: Provider
+      name: host
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $providerDestination.metadata.uid }}
+    source:
+      apiVersion: forklift.konveyor.io/v1beta1
+      kind: Provider
+      name: {{ .Release.Name }}
+      namespace: {{ .Release.Namespace }}
+      uid: {{ $providerSource.metadata.uid }}
+{{- end -}}
