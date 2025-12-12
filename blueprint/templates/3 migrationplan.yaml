@@ -41,4 +41,3 @@ spec:
       namespace: {{ .Release.Namespace }}
   runPreflightInspection: true
   targetPowerState: auto
-{{- end -}}
