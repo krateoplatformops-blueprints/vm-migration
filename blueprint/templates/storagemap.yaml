@@ -19,5 +19,5 @@ spec:
     source:
       apiVersion: forklift.konveyor.io/v1beta1
       kind: Provider
-      name: {{ .Release.Name }}
-      namespace: {{ .Release.Namespace }}
+      name: ovh-esxi
+      namespace: openshift-mtv
