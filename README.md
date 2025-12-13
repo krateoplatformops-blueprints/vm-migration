@@ -1,9 +1,14 @@
-# VM Migration for VMware to KubeVirt with Forklift
+# VM Migration from VMware to KubeVirt with Forklift
 
 ## Overview
 
 This Krateo blueprint orchestrates the migration of virtual machines from a **VMware ESXi** environment to a **KubeVirt** environment in a Kubernetes cluster.
-It leverages the **Forklift operator** for the migration process, ensuring a smooth transition of workloads.
+It leverages the **Forklift operator** for the migration process, ensuring a smooth transition of VMs.
+
+The blueprint will deploy the necessary resources needed to achieve the migration, including:
+- Source and target providers (e.g., VMware and KubeVirt)
+- Network and storage mappings
+- Migration plans
 
 ## Requirements
 
@@ -30,6 +35,7 @@ helm inspect values marketplace/vm-migration --version 0.1.1 > ~/vm-migration-va
 Modify the *vm-migration-values.yaml* file as the following example:
 
 ```yaml
+
 ```
 
 Install the Blueprint:
@@ -43,7 +49,6 @@ helm install <release-name> vm-migration \
   --version 0.1.1 \
   --wait
 ```
-
 
 ### Install using Krateo Composable Operation
 
