@@ -6,7 +6,7 @@ This Krateo blueprint orchestrates the migration of virtual machines from a **VM
 It leverages the **Forklift operator** for the migration process, ensuring a smooth transition of VMs.
 
 The blueprint will deploy the necessary resources needed to achieve the migration, including:
-- Source and target providers (e.g., VMware and KubeVirt)
+- Source and target providers (e.g., VMware and cluster with KubeVirt)
 - Network and storage mappings
 - Migration plans
 
